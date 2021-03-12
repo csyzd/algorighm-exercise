@@ -8,30 +8,47 @@ public class Exercise_1_1_19_FibonacciSequence_BetterImplementation {
     *  */
 
     private static final int N = 100;
-    private static long[] FibonacciCalculationResultArray = new long[N + 1];
+    private static boolean[] cacheIndicator = new boolean[N + 1];
+    private static long[] cache = new long[N + 1];
 
     public static void main(String[] args) {
 
         for (int i = 1; i <= N; i++) {
-            System.out.println(String.format("Fibonacci(%3d) = %d, array element value: %d", i, F(i), FibonacciCalculationResultArray[i]));
+            System.out.println(String.format("Fibonacci(%3d) = %d, array element value: %d", i, F(i), cache[i]));
         }
     }
 
-    private static long F(long n) {
+    private static long F(int n) {
+
+        if (cacheIndicator[n]) {
+            return cache[n];
+        }
+
         if (n == 1) {
-            FibonacciCalculationResultArray[1] = 1;
-            return 1;
+            cache[1] = 1;
+            cacheIndicator[1] = true;
+            return cache[1];
         }
 
         if (n == 2) {
-            FibonacciCalculationResultArray[2] = 1;
-            return 1;
+            cache[2] = 1;
+            cacheIndicator[2] = true;
+            return cache[2];
         }
 
-        FibonacciCalculationResultArray[(int) n] = FibonacciCalculationResultArray[(int) (n - 1)] +
-                FibonacciCalculationResultArray[(int) (n - 2)];
+        if(!cacheIndicator[n-1]){
+            cache[n-1] = F(n-2) + F(n-3);
+            cacheIndicator[n-1] = true;
+        }
+        if(!cacheIndicator[n-2]){
+            cache[n-2] = F(n-3) + F(n-4);
+            cacheIndicator[n-2] = true;
+        }
 
-        return FibonacciCalculationResultArray[(int) n];
+        cache[n] = cache[n-1] + cache[n-2];
+        cacheIndicator[n] = true;
+
+        return cache[n];
     }
 
 }

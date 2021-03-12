@@ -17,6 +17,4 @@ public class Exercise_1_1_19_FibonacciSequence {
 
         return F(n - 1) + F(n - 2);
     }
-
-
 }
